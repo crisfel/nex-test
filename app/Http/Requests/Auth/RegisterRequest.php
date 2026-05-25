@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class RegisterRequest extends FormRequest
 {
@@ -14,9 +17,9 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
         ];
     }
 
@@ -31,5 +34,12 @@ class RegisterRequest extends FormRequest
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
         ];
+    }
+
+    public function failedValidation(Validator $validator): never
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors()
+        ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

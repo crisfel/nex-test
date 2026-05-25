@@ -8,7 +8,7 @@
                 Volver a clientes
             </router-link>
             <h1 class="text-2xl font-bold text-gray-800">{{ isEdit ? 'Editar cliente' : 'Nuevo cliente' }}</h1>
-            <p class="text-sm text-gray-500 mt-0.5">{{ isEdit ? 'Actualizá los datos del cliente' : 'Completá los datos para registrar un nuevo cliente' }}</p>
+            <p class="text-sm text-gray-500 mt-0.5">{{ isEdit ? 'Actualiza los datos del cliente' : 'Completa los datos para registrar un nuevo cliente' }}</p>
         </div>
 
         <div v-if="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-center gap-2">

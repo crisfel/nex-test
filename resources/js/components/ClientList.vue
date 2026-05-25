@@ -3,7 +3,7 @@
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Clientes</h1>
-                <p class="text-sm text-gray-500 mt-0.5">Gestioná tus clientes y sus contactos</p>
+                <p class="text-sm text-gray-500 mt-0.5">Gestiona tus clientes y sus contactos</p>
             </div>
             <router-link
                 :to="{ name: 'ClientCreate' }"
@@ -66,7 +66,7 @@
                 </svg>
             </div>
             <p class="text-gray-500 font-medium">No se encontraron clientes</p>
-            <p class="text-gray-400 text-sm mt-1">Creá tu primer cliente para empezar</p>
+            <p class="text-gray-400 text-sm mt-1">Crea tu primer cliente para empezar</p>
         </div>
 
         <div v-else class="space-y-3">

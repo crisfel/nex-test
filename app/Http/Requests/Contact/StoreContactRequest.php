@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Contact;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class StoreContactRequest extends FormRequest
 {
@@ -14,10 +17,10 @@ class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'is_primary' => ['sometimes', 'boolean'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'is_primary' => 'boolean',
         ];
     }
 
@@ -29,5 +32,12 @@ class StoreContactRequest extends FormRequest
             'email.email' => 'Ingrese un correo electrónico válido.',
             'is_primary.boolean' => 'El campo primario debe ser verdadero o falso.',
         ];
+    }
+
+    public function failedValidation(Validator $validator): never
+    {
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors()
+        ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

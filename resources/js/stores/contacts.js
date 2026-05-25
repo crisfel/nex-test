@@ -23,7 +23,7 @@ export const useContactsStore = defineStore('contacts', () => {
     }
 
     async function updateContact(contactId, payload) {
-        const { data } = await api.put(`/contacts/${contactId}`, payload);
+        const { data } = await api.put('/contacts', { ...payload, id: contactId });
         return data;
     }
 

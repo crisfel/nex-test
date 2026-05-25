@@ -23,8 +23,8 @@ class ClientSeeder extends Seeder
                 'status' => 'activo',
                 'description' => 'Empresa de soluciones tecnológicas.',
                 'contacts' => [
-                    ['name' => 'Carlos López', 'email' => 'carlos@techcorp.com', 'phone' => '+52 5512345678', 'is_primary' => true],
-                    ['name' => 'María García', 'email' => 'maria@techcorp.com', 'phone' => '+52 5512345679', 'is_primary' => false],
+                    ['name' => 'Carlos Lopez', 'email' => 'carlos@techcorp.com', 'phone' => '+52 5512345678', 'is_primary' => true],
+                    ['name' => 'Maria Garcia', 'email' => 'maria@techcorp.com', 'phone' => '+52 5512345679', 'is_primary' => false],
                 ],
             ],
             [
@@ -32,7 +32,7 @@ class ClientSeeder extends Seeder
                 'status' => 'activo',
                 'description' => 'Productora de insumos agrícolas.',
                 'contacts' => [
-                    ['name' => 'Pedro Sánchez', 'email' => 'pedro@greenfield.com', 'phone' => null, 'is_primary' => true],
+                    ['name' => 'Pedro Sanchez', 'email' => 'pedro@greenfield.com', 'phone' => null, 'is_primary' => true],
                 ],
             ],
             [
@@ -49,7 +49,7 @@ class ClientSeeder extends Seeder
                 'status' => 'inactivo',
                 'description' => null,
                 'contacts' => [
-                    ['name' => 'Sofía Medina', 'email' => 'sofia@redsky.com', 'phone' => '+34 912345678', 'is_primary' => true],
+                    ['name' => 'Sofia Medina', 'email' => 'sofia@redsky.com', 'phone' => '+34 912345678', 'is_primary' => true],
                 ],
             ],
             [

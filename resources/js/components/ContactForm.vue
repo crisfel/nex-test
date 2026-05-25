@@ -4,7 +4,7 @@
             <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
                 <div>
                     <h2 class="text-lg font-bold text-gray-800">{{ isEdit ? 'Editar contacto' : 'Nuevo contacto' }}</h2>
-                    <p class="text-sm text-gray-500 mt-0.5">{{ isEdit ? 'Actualizá los datos del contacto' : 'Completá los datos del contacto' }}</p>
+                    <p class="text-sm text-gray-500 mt-0.5">{{ isEdit ? 'Actualiza los datos del contacto' : 'Completa los datos del contacto' }}</p>
                 </div>
                 <button @click="$emit('close')" class="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,7 +26,7 @@
                     </ul>
                 </div>
 
-                <form @submit.prevent="handleSubmit" class="space-y-4">
+                <form class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1.5">Nombre *</label>
                         <input

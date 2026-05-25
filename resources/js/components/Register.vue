@@ -8,7 +8,7 @@
                     </svg>
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800">Crear cuenta</h1>
-                <p class="text-sm text-gray-500 mt-1">Registrate para gestionar tus clientes</p>
+                <p class="text-sm text-gray-500 mt-1">Regístrate para gestionar tus clientes</p>
             </div>
 
             <div v-if="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-center gap-2">
@@ -60,7 +60,7 @@
                         v-model="form.password_confirmation"
                         type="password"
                         required
-                        placeholder="Repetí la contraseña"
+                        placeholder="Repite la contraseña"
                         class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm"
                     />
                 </div>
@@ -81,7 +81,7 @@
             </form>
 
             <p class="mt-6 text-center text-sm text-gray-500">
-                ¿Ya tenés cuenta?
+                ¿Ya tienes cuenta?
                 <router-link :to="{ name: 'Login' }" class="text-indigo-600 hover:text-indigo-800 font-medium">
                     Iniciar sesión
                 </router-link>

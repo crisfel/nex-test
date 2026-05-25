@@ -8,7 +8,7 @@
                     </svg>
                 </div>
                 <h1 class="text-2xl font-bold text-gray-800">Iniciar sesión</h1>
-                <p class="text-sm text-gray-500 mt-1">Ingresá tus credenciales para continuar</p>
+                <p class="text-sm text-gray-500 mt-1">Ingresa tus credenciales para continuar</p>
             </div>
 
             <div v-if="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 text-sm flex items-center gap-2">
@@ -70,7 +70,7 @@
             </form>
 
             <p class="mt-6 text-center text-sm text-gray-500">
-                ¿No tenés cuenta?
+                ¿No tienes cuenta?
                 <router-link :to="{ name: 'Register' }" class="text-indigo-600 hover:text-indigo-800 font-medium">
                     Registrarse
                 </router-link>
