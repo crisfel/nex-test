@@ -82,9 +82,9 @@
 
             <p class="mt-6 text-center text-sm text-gray-500">
                 ¿Ya tienes cuenta?
-                <router-link :to="{ name: 'Login' }" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                <a href="/login" class="text-indigo-600 hover:text-indigo-800 font-medium">
                     Iniciar sesión
-                </router-link>
+                </a>
             </p>
         </div>
     </div>
@@ -92,10 +92,8 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
-const router = useRouter();
 const authStore = useAuthStore();
 
 const form = reactive({ name: '', email: '', password: '', password_confirmation: '' });
@@ -109,7 +107,7 @@ async function handleRegister() {
     loading.value = true;
     try {
         await authStore.register(form);
-        router.push({ name: 'ClientList' });
+        window.location.href = '/clients';
     } catch (err) {
         if (err.response?.status === 422) {
             errors.value = err.response.data.errors;

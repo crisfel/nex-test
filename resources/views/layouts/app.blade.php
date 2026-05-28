@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Mini CRM') }}</title>
+    <title>@yield('title', config('app.name', 'Mini CRM'))</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 text-gray-900 antialiased">
-    <div id="app"></div>
+    @yield('content')
 </body>
 </html>

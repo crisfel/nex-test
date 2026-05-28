@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\Clients\ClientRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class GetAllController extends Controller
@@ -23,7 +22,7 @@ class GetAllController extends Controller
             $clients = $this->clientRepository->getAll($filters);
 
             return response()->json($clients);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

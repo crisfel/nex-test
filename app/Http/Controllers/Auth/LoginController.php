@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,7 +27,7 @@ class LoginController extends Controller
                 'user' => $user,
                 'token' => $token,
             ]);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

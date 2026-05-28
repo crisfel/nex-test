@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\UpdateClientRequest;
 use App\Repositories\Contracts\Clients\ClientRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class UpdateController extends Controller
@@ -28,7 +27,7 @@ class UpdateController extends Controller
             $client = $this->clientRepository->update($id, $name, $status, $description);
 
             return response()->json($client);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

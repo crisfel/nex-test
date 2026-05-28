@@ -71,9 +71,9 @@
 
             <p class="mt-6 text-center text-sm text-gray-500">
                 ¿No tienes cuenta?
-                <router-link :to="{ name: 'Register' }" class="text-indigo-600 hover:text-indigo-800 font-medium">
+                <a href="/register" class="text-indigo-600 hover:text-indigo-800 font-medium">
                     Registrarse
-                </router-link>
+                </a>
             </p>
         </div>
     </div>
@@ -81,10 +81,8 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 
-const router = useRouter();
 const authStore = useAuthStore();
 
 const form = reactive({ email: '', password: '' });
@@ -96,7 +94,7 @@ async function handleLogin() {
     loading.value = true;
     try {
         await authStore.login(form);
-        router.push({ name: 'ClientList' });
+        window.location.href = '/clients';
     } catch (err) {
         error.value = err.response?.data?.message || 'Error al iniciar sesión.';
     } finally {

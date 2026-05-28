@@ -5,15 +5,35 @@
                 <h1 class="text-2xl font-bold text-gray-800">Clientes</h1>
                 <p class="text-sm text-gray-500 mt-0.5">Gestiona tus clientes y sus contactos</p>
             </div>
-            <router-link
-                :to="{ name: 'ClientCreate' }"
+            <a
+                href="/clients/create"
                 class="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 font-medium text-sm"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 Nuevo cliente
-            </router-link>
+            </a>
+            <div class="flex gap-2">
+                <button
+                    @click="exportExcel"
+                    class="flex items-center gap-1.5 px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-emerald-300 hover:text-emerald-600 transition-all"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Excel
+                </button>
+                <button
+                    @click="exportPdf"
+                    class="flex items-center gap-1.5 px-3 py-2.5 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-red-300 hover:text-red-600 transition-all"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    PDF
+                </button>
+            </div>
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 mb-6">
@@ -83,12 +103,12 @@
                                     <span class="text-indigo-600 font-bold text-sm">{{ client.name.charAt(0).toUpperCase() }}</span>
                                 </div>
                                 <div>
-                                    <router-link
-                                        :to="{ name: 'ClientDetail', params: { id: client.id } }"
+                                    <a
+                                        :href="'/clients/' + client.id"
                                         class="text-lg font-semibold text-gray-800 hover:text-indigo-600 transition-colors"
                                     >
                                         {{ client.name }}
-                                    </router-link>
+                                    </a>
                                     <div class="flex items-center gap-2 mt-0.5">
                                         <span class="text-sm text-gray-500 flex items-center gap-1">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,8 +145,8 @@
                         </div>
                     </div>
                     <div class="mt-3 ml-[52px] flex gap-3 pt-3 border-t border-gray-100">
-                        <router-link
-                            :to="{ name: 'ClientDetail', params: { id: client.id } }"
+                        <a
+                            :href="'/clients/' + client.id"
                             class="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
                         >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,16 +154,16 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
                             Ver detalle
-                        </router-link>
-                        <router-link
-                            :to="{ name: 'ClientEdit', params: { id: client.id } }"
+                        </a>
+                        <a
+                            :href="'/clients/' + client.id + '/edit'"
                             class="flex items-center gap-1 text-sm text-gray-600 hover:text-indigo-600 font-medium transition-colors"
                         >
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
                             Editar
-                        </router-link>
+                        </a>
                         <button
                             @click="handleDelete(client)"
                             class="flex items-center gap-1 text-sm text-red-600 hover:text-red-800 font-medium transition-colors"
@@ -193,8 +213,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useAuthStore } from '../stores/auth';
 import { useClientsStore } from '../stores/clients';
+import api from '../bootstrap';
 
+const authStore = useAuthStore();
 const clientsStore = useClientsStore();
 
 const search = ref('');
@@ -206,6 +229,10 @@ const pagination = ref(null);
 let searchTimeout = null;
 
 onMounted(() => {
+    if (!authStore.isAuthenticated) {
+        window.location.href = '/login';
+        return;
+    }
     loadClients();
 });
 
@@ -235,6 +262,39 @@ function onFilter() {
 
 function changePage(page) {
     loadClients(page);
+}
+
+async function downloadExport(url, filename) {
+    try {
+        const params = {};
+        if (search.value) params.search = search.value;
+        if (statusFilter.value) params.status = statusFilter.value;
+        const response = await api.get(url, {
+            params,
+            responseType: 'blob',
+        });
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(blobUrl);
+    } catch (e) {
+        console.error('Export error:', e);
+        console.error('Response:', e.response?.status, e.response?.data);
+        const msg = e.response?.data?.message || e.message || 'Error al descargar el archivo.';
+        alert(msg);
+    }
+}
+
+function exportExcel() {
+    downloadExport('/export/clients/excel', 'clientes.xlsx');
+}
+
+function exportPdf() {
+    downloadExport('/export/clients/pdf', 'clientes.pdf');
 }
 
 async function handleDelete(client) {

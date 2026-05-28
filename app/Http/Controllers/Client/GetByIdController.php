@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\Clients\ClientRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class GetByIdController extends Controller
@@ -22,7 +21,7 @@ class GetByIdController extends Controller
             $client = $this->clientRepository->findById($id);
 
             return response()->json($client);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

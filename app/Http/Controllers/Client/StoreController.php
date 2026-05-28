@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\StoreClientRequest;
 use App\Repositories\Contracts\Clients\ClientRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class StoreController extends Controller
@@ -28,7 +27,7 @@ class StoreController extends Controller
             );
 
             return response()->json($client, 201);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

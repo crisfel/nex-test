@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\UpdateContactRequest;
 use App\Repositories\Contracts\Contacts\ContactRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class UpdateController extends Controller
@@ -29,7 +28,7 @@ class UpdateController extends Controller
             $contact = $this->contactRepository->update($id, $name, $email, $phone, $isPrimary);
 
             return response()->json($contact);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

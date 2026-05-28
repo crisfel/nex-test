@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Contact;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\Contacts\ContactRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class GetByClientController extends Controller
@@ -22,7 +21,7 @@ class GetByClientController extends Controller
             $contacts = $this->contactRepository->getByClient($clientId);
 
             return response()->json($contacts);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

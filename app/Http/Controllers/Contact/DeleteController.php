@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Contact;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\Contacts\ContactRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class DeleteController extends Controller
@@ -22,7 +21,7 @@ class DeleteController extends Controller
             $this->contactRepository->delete($id);
 
             return response()->json(['message' => 'Contacto eliminado correctamente.']);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

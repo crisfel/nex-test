@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
@@ -12,7 +11,7 @@ class UserController extends Controller
     {
         try {
             return response()->json(auth()->user());
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

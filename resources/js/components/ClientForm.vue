@@ -1,12 +1,12 @@
 <template>
     <div class="max-w-2xl mx-auto">
         <div class="mb-6">
-            <router-link :to="{ name: 'ClientList' }" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-indigo-600 transition-colors mb-3">
+            <a href="/clients" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-indigo-600 transition-colors mb-3">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
                 Volver a clientes
-            </router-link>
+            </a>
             <h1 class="text-2xl font-bold text-gray-800">{{ isEdit ? 'Editar cliente' : 'Nuevo cliente' }}</h1>
             <p class="text-sm text-gray-500 mt-0.5">{{ isEdit ? 'Actualiza los datos del cliente' : 'Completa los datos para registrar un nuevo cliente' }}</p>
         </div>
@@ -69,12 +69,12 @@
                     </svg>
                     {{ saving ? 'Guardando...' : 'Guardar cliente' }}
                 </button>
-                <router-link
-                    :to="{ name: 'ClientList' }"
+                <a
+                    href="/clients"
                     class="flex items-center gap-1.5 px-5 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-all font-medium text-sm"
                 >
                     Cancelar
-                </router-link>
+                </a>
             </div>
         </form>
     </div>
@@ -82,14 +82,17 @@
 
 <script setup>
 import { reactive, ref, onMounted, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 import { useClientsStore } from '../stores/clients';
 
-const route = useRoute();
-const router = useRouter();
+const props = defineProps({
+    clientId: { type: [Number, String], default: null },
+});
+
+const authStore = useAuthStore();
 const clientsStore = useClientsStore();
 
-const isEdit = computed(() => !!route.params.id);
+const isEdit = computed(() => !!props.clientId);
 const saving = ref(false);
 const error = ref(null);
 const errors = ref(null);
@@ -101,9 +104,13 @@ const form = reactive({
 });
 
 onMounted(async () => {
+    if (!authStore.isAuthenticated) {
+        window.location.href = '/login';
+        return;
+    }
     if (isEdit.value) {
         try {
-            const client = await clientsStore.fetchClient(route.params.id);
+            const client = await clientsStore.fetchClient(props.clientId);
             form.name = client.name;
             form.status = client.status;
             form.description = client.description || '';
@@ -119,11 +126,11 @@ async function handleSubmit() {
     errors.value = null;
     try {
         if (isEdit.value) {
-            await clientsStore.updateClient(route.params.id, form);
+            await clientsStore.updateClient(props.clientId, form);
         } else {
             await clientsStore.createClient(form);
         }
-        router.push({ name: 'ClientList' });
+        window.location.href = '/clients';
     } catch (err) {
         if (err.response?.status === 422) {
             errors.value = err.response.data.errors;

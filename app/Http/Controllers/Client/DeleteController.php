@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\Clients\ClientRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class DeleteController extends Controller
@@ -22,11 +21,7 @@ class DeleteController extends Controller
             $this->clientRepository->delete($id);
 
             return response()->json(['message' => 'Cliente eliminado correctamente.']);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Contact\StoreContactRequest;
 use App\Repositories\Contracts\Contacts\ContactRepositoryInterface;
-use Exception;
 use Illuminate\Http\JsonResponse;
 
 class StoreController extends Controller
@@ -30,7 +29,7 @@ class StoreController extends Controller
             );
 
             return response()->json($contact, 201);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);

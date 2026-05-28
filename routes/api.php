@@ -13,6 +13,8 @@ use App\Http\Controllers\Contact\GetByClientController as GetContactsByClientCon
 use App\Http\Controllers\Contact\StoreController as StoreContactController;
 use App\Http\Controllers\Contact\UpdateController as UpdateContactController;
 use App\Http\Controllers\Contact\DeleteController as DeleteContactController;
+use App\Http\Controllers\Export\Client\ExportExcelController;
+use App\Http\Controllers\Export\Client\ExportPdfController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', RegisterController::class);
@@ -32,4 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/clients/{clientId}/contacts', StoreContactController::class);
     Route::put('/contacts', UpdateContactController::class);
     Route::delete('/contacts/{id}', DeleteContactController::class);
+
+    Route::get('/export/clients/excel', ExportExcelController::class);
+    Route::get('/export/clients/pdf', ExportPdfController::class);
 });

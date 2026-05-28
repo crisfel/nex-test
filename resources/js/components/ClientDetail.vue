@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="mb-6">
-            <router-link :to="{ name: 'ClientList' }" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-indigo-600 transition-colors mb-3">
+            <a href="/clients" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-indigo-600 transition-colors mb-3">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
                 Volver a clientes
-            </router-link>
+            </a>
         </div>
 
         <div v-if="loading" class="flex justify-center py-16">
@@ -50,15 +50,15 @@
                             <p v-if="client.description" class="mt-3 text-gray-600 text-sm leading-relaxed">{{ client.description }}</p>
                         </div>
                     </div>
-                    <router-link
-                        :to="{ name: 'ClientEdit', params: { id: client.id } }"
+                    <a
+                        :href="'/clients/' + client.id + '/edit'"
                         class="flex items-center gap-1.5 px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-indigo-300 hover:text-indigo-600 transition-all"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                         </svg>
                         Editar cliente
-                    </router-link>
+                    </a>
                 </div>
             </div>
 
@@ -183,16 +183,19 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 import { useClientsStore } from '../stores/clients';
 import { useContactsStore } from '../stores/contacts';
 import ContactForm from './ContactForm.vue';
 
-const route = useRoute();
+const props = defineProps({
+    clientId: { type: [Number, String], required: true },
+});
+
+const authStore = useAuthStore();
 const clientsStore = useClientsStore();
 const contactsStore = useContactsStore();
 
-const clientId = computed(() => Number(route.params.id));
 const client = computed(() => clientsStore.currentClient);
 const contacts = ref([]);
 const loading = ref(false);
@@ -200,9 +203,13 @@ const showCreateForm = ref(false);
 const editingContact = ref(null);
 
 onMounted(async () => {
+    if (!authStore.isAuthenticated) {
+        window.location.href = '/login';
+        return;
+    }
     loading.value = true;
     try {
-        await clientsStore.fetchClient(clientId.value);
+        await clientsStore.fetchClient(props.clientId);
         await loadContacts();
     } finally {
         loading.value = false;
@@ -210,7 +217,7 @@ onMounted(async () => {
 });
 
 async function loadContacts() {
-    const data = await contactsStore.fetchContacts(clientId.value);
+    const data = await contactsStore.fetchContacts(props.clientId);
     contacts.value = data;
 }
 
