@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hunter2460/test-nex:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    environment:
+      DB_HOST: db
+      DB_DATABASE: mini_crm
+      DB_USERNAME: mini_crm
+      DB_PASSWORD: secret
+    restart: always
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: mini_crm
+      MYSQL_USER: mini_crm
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root_secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "mini_crm", "-psecret"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:
