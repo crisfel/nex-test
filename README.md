@@ -211,7 +211,7 @@ routes/
 
 - **Single-action controllers** (`__invoke`): cada controlador hace una sola cosa (SRP).
 - **Patrón Repositorio** con interfaces vinculadas en `RepositoriesServiceProvider`: desacopla la lógica de acceso a datos.
-- **Soft deletes**: no se pierden datos accidentalmente. Ideal para un CRM.
+- **Soft deletes**: no se pierden datos accidentalmente.
 - **Contacto primario único**: se implementa con transacciones de base de datos en el `ContactRepository`.
 - **Validación**: Form Requests de Laravel con mensajes de error en español. Errores 422 campo por campo.
 - **Exportación**: `maatwebsite/excel` 3.x y `barryvdh/laravel-dompdf`.
