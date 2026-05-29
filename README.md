@@ -9,118 +9,117 @@ Con exportación de datos a Excel y PDF, y Dockerizado.
 >
 > | Modo               | Puerto | URL                    |
 > |--------------------|--------|------------------------|
-> | 🐳 Docker          | **8001** | **http://localhost:8001** |
-> | 💻 Local (clonado) | **8000** | **http://localhost:8000** |
+> | 🐳 Opción A: Docker | **8001** | **http://localhost:8001** |
+> | 💻 Opción B: Local  | **8000** | **http://localhost:8000** |
 >
-> **No los confundas.** Si usas Docker el puerto es **8001**. Si clonas y ejecutas local es **8000**.
+> **No los confundas.** Si usas Docker el puerto es **8001**. Si ejecutas local es **8000**.
 
 ---
 
-## ⚡ Inicio rápido con Docker Hub
+## Instalación
 
-### Prerrequisitos
-- Docker y Docker Compose instalados
-
-### Pasos
-
-```bash
-# 1. Crear una carpeta y descargar solo el docker-compose.yml
-mkdir mini-crm && cd mini-crm
-curl -O https://raw.githubusercontent.com/hunter2460/test-nex/main/docker-compose.yml
-
-# 2. Iniciar los servicios (descarga la imagen automáticamente)
-docker compose up -d
-
-# 3. Acceder a la aplicación
-#    🐳 PUERTO 8001
-start http://localhost:8001
-```
-
-> 🐳 **La aplicación Dockerizada se accede en: http://localhost:8001**
-
-### O clonando el repositorio completo
+### 1. Clonar el repositorio
 
 ```bash
 git clone <repo-url>
 cd test-nex
+```
+
+### 2. Elegir modo de ejecución
+
+Una vez clonado, puedes ejecutar la aplicación de dos formas:
+
+---
+
+## 🐳 Opción A: Docker (recomendado)
+
+Usa la imagen pre-construida en Docker Hub. No necesitas PHP, Composer ni Node.js instalados.
+
+### Prerrequisitos
+- Docker y Docker Compose
+
+### Pasos
+
+```bash
+# Desde la raíz del proyecto clonado:
 docker compose up -d
 ```
 
 > 🐳 **Acceder en: http://localhost:8001 (PUERTO 8001)**
 
-### Credenciales de prueba
-
-| Campo  | Valor          |
-|--------|----------------|
-| Email  | admin@demo.com |
-| Pass   | password       |
+La primera vez descargará la imagen `hunter2460/test-nex:latest` y creará el contenedor de MySQL.
 
 ### Detalles del entorno Docker
 
-- La aplicación se sirve en **http://localhost:8001**
-- MySQL está expuesto en el puerto **3307** del host (evita conflictos con MySQL local)
-- Las migraciones y seeders se ejecutan automáticamente al arrancar el contenedor
+- Aplicación: **http://localhost:8001**
+- MySQL host: puerto **3307** (evita conflictos con MySQL local)
+- Las migraciones y seeders se ejecutan automáticamente al arrancar
 - Los datos persisten en un volumen Docker (`db_data`)
-- La imagen预construida está en Docker Hub: `hunter2460/test-nex:latest`
+- La imagen pre-construida está en Docker Hub: `hunter2460/test-nex:latest`
 
 ---
 
-## Instalación local (desarrollo clonando el repo)
+## 💻 Opción B: Local (desarrollo)
 
 ### Prerrequisitos
 - PHP ^8.2
 - Composer
 - Node.js 18+
-- MySQL 8 (o SQLite para desarrollo)
+- MySQL 8 (o SQLite)
 
 ### Pasos
 
 ```bash
-# 1. Clonar el repositorio
-git clone <repo-url>
-cd test-nex
+# Desde la raíz del proyecto clonado:
 
-# 2. Instalar dependencias PHP
+# 2a. Instalar dependencias PHP
 composer install
 
-# 3. Configurar variables de entorno
+# 2b. Configurar variables de entorno
 cp .env.example .env
 # Editar DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD en .env
 
-# 4. Generar key de la aplicación
+# 2c. Generar key de la aplicación
 php artisan key:generate
 
-# 5. Crear la base de datos y ejecutar migraciones + seeders
+# 2d. Crear la base de datos y ejecutar migraciones + seeders
 php artisan migrate --seed
 
-# 6. Instalar dependencias del frontend
+# 2e. Instalar dependencias del frontend
 npm install
 
-# 7a. Compilar assets para producción (sin HMR)
+# 2f. Compilar assets
 npm run build
 ```
 
 Luego inicia el servidor:
 
 ```bash
-# Terminal 1 — Servidor Laravel
 php artisan serve
-#    💻 PUERTO 8000
 ```
 
-> 💻 **La aplicación local se accede en: http://localhost:8000 (PUERTO 8000)**
+> 💻 **Acceder en: http://localhost:8000 (PUERTO 8000)**
 
-**Opcional — Desarrollo con HMR (Hot Module Replacement):**
+**Desarrollo con HMR (Hot Module Replacement):**
 
 ```bash
 # Terminal 1 — Backend
 php artisan serve
 
-# Terminal 2 — Frontend (Vite Dev Server con HMR)
+# Terminal 2 — Frontend (Vite Dev Server)
 npm run dev
 ```
 
-Los cambios en Vue se reflejan automáticamente sin recargar la página.
+Los cambios en Vue/CSS se reflejan automáticamente sin recargar la página.
+
+---
+
+## Credenciales de prueba
+
+| Campo  | Valor          |
+|--------|----------------|
+| Email  | admin@demo.com |
+| Pass   | password       |
 
 ---
 
@@ -214,7 +213,6 @@ routes/
 - **Patrón Repositorio** con interfaces vinculadas en `RepositoriesServiceProvider`: desacopla la lógica de acceso a datos.
 - **Soft deletes**: no se pierden datos accidentalmente. Ideal para un CRM.
 - **Contacto primario único**: se implementa con transacciones de base de datos en el `ContactRepository`.
-- **Textos en español neutro (Colombia)**: con tildes, sin voseo.
 - **Validación**: Form Requests de Laravel con mensajes de error en español. Errores 422 campo por campo.
 - **Exportación**: `maatwebsite/excel` 3.x y `barryvdh/laravel-dompdf`.
 - **Docker**: imagen basada en `php:8.2-apache` con Apache en puerto 8001, MySQL 8.0 con healthcheck, entrypoint que ejecuta migraciones y seeders automáticamente.
